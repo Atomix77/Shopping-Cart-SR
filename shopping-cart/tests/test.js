@@ -154,7 +154,7 @@ describe('Valid Cases', () => {
             {code: 'B', quantity: -1},
             {code: 'C', quantity: 3},
             {code: 'X', quantity: 5}
-        ])).toThrow('Unknown product code E; Quantity must be a positive number; Unknown product code X');
+        ])).toThrow('Unknown product code E; Quantity must be a positive integer; Unknown product code X');
         expect(shoppingCart.getTotal()).toBe(175);
     });
 
@@ -210,13 +210,13 @@ describe('Invalid Cases', () => {
 
     test('throw error for negative quantity values', () => {
         const shoppingCart = new ShoppingCart();
-        expect(() => shoppingCart.addItemsToCart([{code: 'A', quantity: -1}])).toThrow('Quantity must be a positive number');
+        expect(() => shoppingCart.addItemsToCart([{code: 'A', quantity: -1}])).toThrow('Quantity must be a positive integer');
         expect(shoppingCart.getTotal()).toBe(0);
     });
 
     test('throw error for zero quantity values', () => {
         const shoppingCart = new ShoppingCart();
-        expect(() => shoppingCart.addItemsToCart([{code: 'A', quantity: 0}])).toThrow('Quantity must be a positive number');
+        expect(() => shoppingCart.addItemsToCart([{code: 'A', quantity: 0}])).toThrow('Quantity must be a positive integer');
         expect(shoppingCart.getTotal()).toBe(0);
     });
 
@@ -225,5 +225,5 @@ describe('Invalid Cases', () => {
         expect(() => shoppingCart.addItemsToCart([{code: 'B', quantity: 2.5}])).toThrow('Invalid item format');
         expect(shoppingCart.getTotal()).toBe(0);
     });
-    
+
 });

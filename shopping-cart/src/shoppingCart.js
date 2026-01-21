@@ -43,11 +43,11 @@ class ShoppingCart {
      * 
      * Validates all items first, adds valid ones to the cart, then throws an error listing any invalid items.
      * 
-     * @param {Array<{code: string, quantity: number}>} items - Array of items to add.
+     * @param {Array<{code: string, quantity: number}>} items - Array of items to add. Quantity must be an integer.
      * @throws {Error} - "Items should be an array" - If input is not an array.
-     * @throws {Error} - "Invalid item format" - If item is missing required properties.
+     * @throws {Error} - "Invalid item format" - If item is missing required properties or quantity is not an integer.
      * @throws {Error} - "Unknown product code X" - If product code is not in pricing rules.
-     * @throws {Error} - "Quantity must be a positive number" - If quantity <= 0.
+     * @throws {Error} - "Quantity must be a positive integer" - If quantity <= 0.
      * 
      * @example
      * cart.addItemsToCart([
@@ -79,7 +79,7 @@ class ShoppingCart {
      * @private
      * @param {Object[]} items - The items to add.
      * @param {string} items[].code - The product code (A, B, C, or D).
-     * @param {number} items[].quantity - The quantity to add.
+     * @param {number} items[].quantity - The quantity to add. Quantity must be an integer.
      * @returns {Object.<string, number>} - The updated cart state.
      */
     addValidItemsToCart(items) {
@@ -99,7 +99,7 @@ class ShoppingCart {
      * Separates valid and invalid items from the input array.
      *
      * @private
-     * @param {Array<{code: string, quantity: number}>} items - Array of items to validate.
+     * @param {Array<{code: string, quantity: number}>} items - Array of items to validate. Quantity must be an integer.
      * @returns {{validItems: Array, invalidItems: Array}} - Object containing arrays of valid and invalid items.
      */
     separateValidAndInvalidItems(items) {
@@ -144,7 +144,7 @@ class ShoppingCart {
 
         // Check for positive quantity
         if (item.quantity <= 0) {
-            return 'Quantity must be a positive number';
+            return 'Quantity must be a positive integer';
         }
 
         return null;

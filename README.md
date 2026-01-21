@@ -30,7 +30,7 @@ A JavaScript implementation of a simple checkout system with special pricing off
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14.x or higher)
+- [Node.js](https://nodejs.org/) (v20.x or higher)
 - npm (included with Node.js)
 
 ### Setup
@@ -101,7 +101,13 @@ cart.getTotal(); // Output: 284
 
 ### `addItemsToCart(items)`
 
-Adds an array of items to the cart. Validates all items, adds valid ones, then throws errors for invalid items.
+Adds an array of items to the cart. Separates items into valid and invalid, adds valid ones, then throws errors for invalid items.
+
+**Implementation Flow:**
+1. Validates input is an array
+2. Calls `separateValidAndInvalidItems()` to categorise items
+3. Calls `addValidItemsToCart()` to process valid items
+4. Throws aggregated errors for any invalid items
 
 #### Parameters
 
@@ -109,7 +115,7 @@ Adds an array of items to the cart. Validates all items, adds valid ones, then t
 |-----------|------|-------------|
 | `items` | `Array<Object>` | Array of item objects |
 | `items[].code` | `string` | Product code (A, B, C, or D) |
-| `items[].quantity` | `number` | Positive integer quantity |
+| `items[].quantity` | `integer` | Positive integer quantity |
 
 #### Returns
 
@@ -120,9 +126,58 @@ Adds an array of items to the cart. Validates all items, adds valid ones, then t
 | Error Message | Cause |
 |---------------|-------|
 | `Items should be an array` | Input is not an array |
-| `Invalid item format` | Missing/invalid `code` or `quantity` property |
+| `Invalid item format` | Missing/invalid `code` or `quantity` properties or quantity is not an integer |
 | `Unknown product code X` | Product code not in pricing rules |
-| `Quantity must be a positive number` | Quantity ≤ 0 |
+| `Quantity must be a positive integer` | Quantity ≤ 0 |
+
+---
+
+### `separateValidAndInvalidItems(items)`
+
+Separates valid and invalid items from the input array during validation.
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `items` | `Array<Object>` | Array of item objects to validate |
+
+#### Returns
+
+`Object` — Object with `validItems` and `invalidItems` arrays.
+
+---
+
+### `addValidItemsToCart(items)`
+
+Adds validated items to the cart. If an item already exists, the quantity is accumulated.
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `items` | `Array<Object>` | Array of validated item objects |
+| `items[].code` | `string` | Product code (A, B, C, or D) |
+| `items[].quantity` | `integer` | Positive integer quantity |
+
+#### Returns
+
+`Object.<string, integer>` — The updated cart state.
+---
+
+### `validateItem(item)`
+
+Validates a single item against the expected format and pricing rules.
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `item` | `Object` | Item object to validate |
+
+#### Returns
+
+`?string` — Error message if invalid, `null` if valid.
 
 ---
 
@@ -156,9 +211,9 @@ npm test
 
 | Category | Scenarios Covered |
 |----------|-------------------|
-| **Valid Operations** | Empty cart, single item, multiple items, special pricing, overflow quantities |
-| **Invalid Operations** | Missing array, invalid formats, unknown item codes, invalid quantities |
-| **Edge Cases** | Empty array input, quantities exceeding special offer thresholds |
+| **Valid Operations** | Zero-total initialisation, batch processing, cumulative additions, and multi-buy discount logic |
+| **Invalid Operations** | Input type enforcement, malformed item objects, and strict product code validation |
+| **Error Handling** | Validates that correct items are added to the total even when accompanied by invalid items in a batch |
 
 ---
 
