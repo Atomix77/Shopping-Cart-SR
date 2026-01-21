@@ -22,9 +22,9 @@ A JavaScript implementation of a simple checkout system with special pricing off
 | Feature | Description |
 |---------|-------------|
 | **Cart Management** | Add items with quantities, accumulates across multiple calls |
-| **Special Pricing** | Automatic application of discounts (e.g. "3 for 140") |
+| **Special Offers** | Automatic application of discounts (e.g. "3 for 140") |
 | **Input Validation** | Comprehensive validation with detailed error messages |
-| **Graceful Errors** | Valid items processed even when invalid items present |
+| **Error Handling** | Valid items processed even when invalid items present |
 
 ## Installation
 
@@ -76,7 +76,7 @@ cart.addItemsToCart([
 ]);
 
 // Calculate cart total
-console.log(cart.getTotal()); // Output: 284
+cart.getTotal(); // Output: 284
 
 ```
 
@@ -132,7 +132,7 @@ Calculates and returns the total price, applying special pricing where applicabl
 
 #### Returns
 
-`number` — The calculated total.
+`number` — The calculated cart total.
 
 ---
 

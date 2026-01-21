@@ -79,6 +79,17 @@ describe('ShoppingCart-Valid', () => {
         expect(shoppingCart.getTotal()).toBe(237);
     });
 
+    test('Add Multiple Different Amounts of Items to the Cart', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 3},
+            {code: 'B', quantity: 3},
+            {code: 'C', quantity: 1},
+            {code: 'D', quantity: 2}
+        ]);
+        expect(shoppingCart.getTotal()).toBe(284);
+    });
+
     test('Item Quantity Exceeding Special Price Offer', () => {
         const shoppingCart = new ShoppingCart();
         shoppingCart.addItemsToCart([
