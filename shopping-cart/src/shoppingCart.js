@@ -26,36 +26,16 @@ const pricing = {
  * @class
  * @example
  * const cart = new ShoppingCart();
- * cart.addItemsToCart([{ code: 'A', quantity: 3 }]);
+ * cart.addItemsToCart([{code: 'A', quantity: 3}]);
  * console.log(cart.getTotal()); // returns 140
  */
 class ShoppingCart {
     /**
      * Creates a new ShoppingCart instance with an empty cart.
+     * @type {Object.<string, number>} - The cart object storing item codes and their quantities.
      */
     constructor() {
-        /** @type {Object.<string, number>} */
         this.cart = {};
-    }
-
-    /**
-     * Adds a single item to the cart. If the item already exists, the quantity is added.
-     * 
-     * @private
-     * @param {Object} item - The item to add.
-     * @param {string} item.code - The product code (A, B, C, or D).
-     * @param {number} item.quantity - The quantity to add.
-     * @returns {Object.<string, number>} - The updated cart state.
-     */
-    addItemToCart(item) {
-        const {code, quantity} = item;
-
-        if (this.cart[code]) {
-            this.cart[code] += quantity;
-        } else {
-            this.cart[code] = quantity;
-        }
-        return this.cart;
     }
 
     /**
@@ -71,8 +51,8 @@ class ShoppingCart {
      * 
      * @example
      * cart.addItemsToCart([
-     *   { code: 'A', quantity: 2 },
-     *   { code: 'B', quantity: 1 }
+     *   {code: 'A', quantity: 2},
+     *   {code: 'B', quantity: 1}
      * ]);
      */
     addItemsToCart(items) {
@@ -80,6 +60,49 @@ class ShoppingCart {
             throw new Error('Items should be an array');
         } 
         
+        // Separate valid and invalid items
+        const {validItems, invalidItems} = this.separateValidAndInvalidItems(items);
+
+        // Add valid items to cart
+        this.addValidItemsToCart(validItems);
+
+        // Throws all errors for invalid items
+        if (invalidItems.length > 0) {
+            const errorMessages = invalidItems.map(({item, error}) => error).join('; ');
+            throw new Error(errorMessages);
+        }
+    }
+
+    /**
+     * Adds items to the cart. If an item already exists, the quantity is added.
+     * 
+     * @private
+     * @param {Object[]} items - The items to add.
+     * @param {string} items[].code - The product code (A, B, C, or D).
+     * @param {number} items[].quantity - The quantity to add.
+     * @returns {Object.<string, number>} - The updated cart state.
+     */
+    addValidItemsToCart(items) {
+        items.forEach(item => {
+            const {code, quantity} = item;
+
+            if (this.cart[code]) {
+                this.cart[code] += quantity;
+            } else {
+                this.cart[code] = quantity;
+            }
+        });
+        return this.cart;
+    }
+
+    /**
+     * Separates valid and invalid items from the input array.
+     *
+     * @private
+     * @param {Array<{code: string, quantity: number}>} items - Array of items to validate.
+     * @returns {{validItems: Array, invalidItems: Array}} - Object containing arrays of valid and invalid items.
+     */
+    separateValidAndInvalidItems(items) {
         const validItems = [];
         const invalidItems = [];
 
@@ -92,15 +115,7 @@ class ShoppingCart {
                 validItems.push(item);
             }
         });
-        
-        // Adds all valid items to cart
-        validItems.forEach(item => this.addItemToCart(item));
-
-        // Throws all errors for invalid items
-        if (invalidItems.length > 0) {
-            const errorMessages = invalidItems.map(({item, error}) => error).join('; ');
-            throw new Error(errorMessages);
-        }
+        return {validItems, invalidItems};
     }
 
     /**
