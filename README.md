@@ -2,7 +2,7 @@
 
 A JavaScript implementation of a simple checkout system with special pricing offers.
 
-[Getting Started](#installation) • [Usage](#usage) • [Testing](#testing)
+[Getting Started](#installation) • [Example Code](#shopping-cart) • [Testing](#testing)
 
 ---
 
@@ -170,9 +170,8 @@ shopping-cart/
 │   └── shoppingCart.js     # Core checkout logic
 ├── tests/
 │   └── test.js             # Jest test suite
-├── 📄 package.json        # Dependencies & scripts
-├── 📄 package-lock.json   # Locked dependencies
-└── 📄 README.md           # Documentation
+├── package.json            # Dependencies & scripts
+├── package-lock.json       # Locked dependencies
+└── README.md               # Documentation
 ```
-
 ---
