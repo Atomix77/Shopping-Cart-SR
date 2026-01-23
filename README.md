@@ -223,6 +223,7 @@ npm test
 shopping-cart/
 ├── src/
 │   └── shoppingCart.js     # Core checkout logic
+│   └── pricingRules.json   # Pricing rules data
 ├── tests/
 │   └── test.js             # Jest test suite
 ├── package.json            # Dependencies & scripts

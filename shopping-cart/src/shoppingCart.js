@@ -5,21 +5,7 @@
  * 
  * @module ShoppingCart
  */
-
-/**
- * Pricing rules for the available products.
- * 
- * Each product has a unit price and some products have a special offer.
- * 
- * @constant {Object.<string, {unitPrice: number, specialPrice: ?{quantity: number, price: number}}>}
- */
-const pricing = {
-    A: {unitPrice: 50, specialPrice: {quantity: 3, price: 140}},
-    B: {unitPrice: 35, specialPrice: {quantity: 2, price: 60}},
-    C: {unitPrice: 25, specialPrice: null},
-    D: {unitPrice: 12, specialPrice: null}
-};
-
+const defaultPricingRules = require('./pricingRules.json');
 /**
  * ShoppingCart class for managing items and calculating totals.
  * 
@@ -34,8 +20,9 @@ class ShoppingCart {
      * Creates a new ShoppingCart instance with an empty cart.
      * @type {Object.<string, number>} - The cart object storing item codes and their quantities.
      */
-    constructor() {
+    constructor(pricingRules = defaultPricingRules) {
         this.cart = {};
+        this.pricing = pricingRules;
     }
 
     /**
@@ -138,7 +125,7 @@ class ShoppingCart {
         }
 
         // Check if product code exists in pricing rules
-        if (!pricing.hasOwnProperty(item.code)) {
+        if (!this.pricing.hasOwnProperty(item.code)) {
             return `Unknown product code ${item.code}`;
         }
 
@@ -171,7 +158,7 @@ class ShoppingCart {
 
         for (const code in this.cart) {
             const quantity = this.cart[code];
-            const {unitPrice, specialPrice} = pricing[code];
+            const {unitPrice, specialPrice} = this.pricing[code];
 
             if (specialPrice) {
                 // Calculate how many special offers apply
