@@ -158,6 +158,63 @@ describe('Valid Cases', () => {
         expect(shoppingCart.getTotal()).toBe(175);
     });
 
+    test('Remove One Item', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 4},
+            {code: 'B', quantity: 4},
+        ]);
+        expect(shoppingCart.getTotal(250))
+        shoppingCart.removeItemFromCart('A', 2)
+        expect(shoppingCart.getTotal(160))
+    })
+
+    test('Remove All of One Item', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 4},
+            {code: 'B', quantity: 4},
+        ]);
+        expect(shoppingCart.getTotal(250))
+        shoppingCart.removeItemFromCart('A', 4)
+        expect(shoppingCart.getTotal(60))
+    })
+
+    test('Remove All of One Item', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 4},
+            {code: 'B', quantity: 4},
+        ]);
+        expect(shoppingCart.getTotal(250))
+        shoppingCart.removeItemFromCart('A')
+        expect(shoppingCart.getTotal(60))
+    })
+
+    test('Remove All Items', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 4},
+            {code: 'B', quantity: 4},
+        ]);
+        expect(shoppingCart.getTotal(250))
+        shoppingCart.removeItemFromCart('A')
+        shoppingCart.removeItemFromCart('B', 4)
+        expect(shoppingCart.getTotal(0))
+    })
+
+    test('Remove All Items', () => {
+        const shoppingCart = new ShoppingCart();
+        shoppingCart.addItemsToCart([
+            {code: 'A', quantity: 4},
+            {code: 'B', quantity: 4},
+        ]);
+        expect(shoppingCart.getTotal(250))
+        shoppingCart.removeItemFromCart('A')
+        shoppingCart.removeItemFromCart('B', 10)
+        expect(shoppingCart.getTotal(0))
+    })
+
 });
 
 describe('Invalid Cases', () => {

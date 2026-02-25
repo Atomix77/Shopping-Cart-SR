@@ -137,6 +137,20 @@ class ShoppingCart {
         return null;
     }
 
+    removeItemFromCart(code, quantity) {
+        if (!this.cart[code]) {
+            throw new Error(`Item ${code} is not in cart`);
+        }
+
+        if (quantity === undefined) {
+            delete this.cart[code];
+        } else if (this.cart[code] <=  quantity) {
+            delete this.cart[code];
+        } else {
+            this.cart[code] -= quantity;
+        }
+    }
+
     /**
      * Calculates the total price of all items in the cart,
      * applying special pricing offers where applicable.
